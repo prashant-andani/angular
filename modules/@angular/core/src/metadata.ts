@@ -11,30 +11,18 @@
  * to be used by the decorator versions of these annotations.
  */
 
-import {ChangeDetectionStrategy} from './change_detection/constants';
 import {AttributeMetadata, ContentChildMetadata, ContentChildrenMetadata, QueryMetadata, ViewChildMetadata, ViewChildrenMetadata, ViewQueryMetadata} from './metadata/di';
 import {Component, Directive, HostBindingMetadata, HostListenerMetadata, InputMetadata, OutputMetadata, PipeMetadata, PipeMetadataType} from './metadata/directives';
-import {ModuleWithProviders, NgModuleMetadata, NgModuleMetadataType, SchemaMetadata} from './metadata/ng_module';
+import {ModuleWithProviders, NgModule, SchemaMetadata} from './metadata/ng_module';
 import {ViewEncapsulation} from './metadata/view';
 import {Type} from './type';
-import {TypeDecorator, makeDecorator, makeDecorator2, makeParamDecorator, makePropDecorator} from './util/decorators';
+import {TypeDecorator, makeDecorator, makeParamDecorator, makePropDecorator} from './util/decorators';
 
 export {ANALYZE_FOR_ENTRY_COMPONENTS, AttributeMetadata, ContentChildMetadata, ContentChildrenMetadata, QueryMetadata, ViewChildMetadata, ViewChildrenMetadata, ViewQueryMetadata} from './metadata/di';
 export {Component, Directive, HostBindingMetadata, HostListenerMetadata, InputMetadata, OutputMetadata, PipeMetadata, PipeMetadataType} from './metadata/directives';
 export {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnChanges, OnDestroy, OnInit} from './metadata/lifecycle_hooks';
-export {CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NO_ERRORS_SCHEMA, NgModuleMetadata, NgModuleMetadataType, SchemaMetadata} from './metadata/ng_module';
+export {CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NO_ERRORS_SCHEMA, NgModule, SchemaMetadata} from './metadata/ng_module';
 export {ViewEncapsulation} from './metadata/view';
-
-
-
-/**
- * Interface for the {@link NgModuleMetadata} decorator function.
- *
- * See {@link NgModuleMetadataFactory}.
- *
- * @stable
- */
-export interface NgModuleDecorator extends TypeDecorator {}
 
 /**
  * {@link AttributeMetadata} factory for creating annotations, decorators or DSL.
@@ -170,19 +158,10 @@ export interface HostListenerMetadataFactory {
   new (eventName: string, args?: string[]): any;
 }
 
-/**
- * {@link NgModuleMetadata} factory for creating annotations, decorators or DSL.
- *
- * @stable
- */
-export interface NgModuleMetadataFactory {
-  (obj?: NgModuleMetadataType): NgModuleDecorator;
-  new (obj?: NgModuleMetadataType): NgModuleMetadata;
-}
-
+// TODO(vicb): delete ?
 export {Directive as DirectiveMetadata};
-
 export {Component as ComponentMetadata};
+export {NgModule as NgModuleMetadata};
 
 /**
  * Specifies that a constant attribute value should be injected.
@@ -596,11 +575,3 @@ export var HostBinding: HostBindingMetadataFactory = makePropDecorator(HostBindi
  * @Annotation
  */
 export var HostListener: HostListenerMetadataFactory = makePropDecorator(HostListenerMetadata);
-
-/**
- * Declares an ng module.
- * @stable
- * @Annotation
- */
-export var NgModule: NgModuleMetadataFactory =
-    <NgModuleMetadataFactory>makeDecorator(NgModuleMetadata);

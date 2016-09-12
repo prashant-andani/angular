@@ -282,15 +282,16 @@ export function makeDecorator(annotationCls: any, chainFn: (fn: Function) => voi
   return DecoratorFactory;
 }
 
-export function makeDecorator2(props: {[key: string]: any}, parentClass?: any):
-    (...args: any[]) => (cls: any) => any {
+export function makeDecorator2(props: {[key: string]: any}, parentClass?: any): (...args: any[]) =>
+    (cls: any) => any {
   const ctor = makeMetadataClass([props], parentClass);
   const result = makeDecorator(ctor);
   result.prototype = ctor.prototype;
   return result;
 }
 
-function makeMetadataClass(props: ([string, any] | {[key: string]: any})[], parentClass?: any): any {
+function makeMetadataClass(
+    props: ([string, any] | {[key: string]: any})[], parentClass?: any): any {
   function ctor(...args: any[]) {
     props.forEach((prop, i) => {
       const argVal = args[i];
@@ -316,15 +317,15 @@ function makeMetadataClass(props: ([string, any] | {[key: string]: any})[], pare
 
 export function makeParamDecorator(annotationCls: any): any {
   function ParamDecoratorFactory(...args: any[]): any {
-    var annotationInstance = Object.create(annotationCls.prototype);
+    let annotationInstance = Object.create(annotationCls.prototype);
     annotationCls.apply(annotationInstance, args);
+
     if (this instanceof annotationCls) {
       return annotationInstance;
-    } else {
-      (<any>ParamDecorator).annotation = annotationInstance;
-      return ParamDecorator;
     }
 
+    (<any>ParamDecorator).annotation = annotationInstance;
+    return ParamDecorator;
 
     function ParamDecorator(cls: any, unusedKey: any, index: number): any {
       const parameters: any[][] = Reflect.getMetadata('parameters', cls) || [];
