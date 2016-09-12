@@ -104,7 +104,7 @@ export class TestBed implements Injector {
    */
   static compileComponents(): Promise<any> { return getTestBed().compileComponents(); }
 
-  static overrideModule(ngModule: Type<any>, override: MetadataOverride<NgModuleMetadataType>):
+  static overrideModule(ngModule: Type<any>, override: MetadataOverride<NgModule>):
       typeof TestBed {
     getTestBed().overrideModule(ngModule, override);
     return TestBed;
@@ -144,7 +144,7 @@ export class TestBed implements Injector {
 
   private _compilerOptions: CompilerOptions[] = [];
 
-  private _moduleOverrides: [Type<any>, MetadataOverride<NgModuleMetadataType>][] = [];
+  private _moduleOverrides: [Type<any>, MetadataOverride<NgModule>][] = [];
   private _componentOverrides: [Type<any>, MetadataOverride<Component>][] = [];
   private _directiveOverrides: [Type<any>, MetadataOverride<Directive>][] = [];
   private _pipeOverrides: [Type<any>, MetadataOverride<PipeMetadataType>][] = [];
@@ -316,7 +316,7 @@ export class TestBed implements Injector {
     return FunctionWrapper.apply(fn, params);
   }
 
-  overrideModule(ngModule: Type<any>, override: MetadataOverride<NgModuleMetadataType>): void {
+  overrideModule(ngModule: Type<any>, override: MetadataOverride<NgModule>): void {
     this._assertNotInstantiated('overrideModule', 'override module metadata');
     this._moduleOverrides.push([ngModule, override]);
   }

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {global, isFunction, isStrictStringMap, stringify} from '../facade/lang';
+import {global, isFunction, stringify} from '../facade/lang';
 import {Type} from '../type';
 
 var _nextClassId = 0;
@@ -284,7 +284,7 @@ export function makeDecorator(annotationCls: any, chainFn: (fn: Function) => voi
 
 export function makeDecorator2(props: {[key: string]: any}, parentClass?: any):
     (...args: any[]) => (cls: any) => any {
-  const ctor = makeMetadataClass([props]);
+  const ctor = makeMetadataClass([props], parentClass);
   const result = makeDecorator(ctor);
   result.prototype = ctor.prototype;
   return result;
@@ -294,22 +294,23 @@ function makeMetadataClass(props: ([string, any] | {[key: string]: any})[], pare
   function ctor(...args: any[]) {
     props.forEach((prop, i) => {
       const argVal = args[i];
-      if (prop instanceof Array) {
+      if (Array.isArray(prop)) {
         // plain parameter
-        const val = argVal === undefined ? prop[1] : argVal;
+        const val = !argVal || argVal === undefined ? prop[1] : argVal;
         this[prop[0]] = val;
       } else {
-        // spread
         for (let propName in prop) {
-          const val = argVal[propName] === undefined ? prop[propName] : argVal[propName];
+          const val = !argVal || argVal[propName] === undefined ? prop[propName] : argVal[propName];
           this[propName] = val;
         }
       }
     });
-  };
+  }
+
   if (parentClass) {
     ctor.prototype = Object.create(parentClass.prototype);
   }
+
   return ctor;
 }
 
