@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {Compiler, CompilerOptions, ComponentMetadataType, DirectiveMetadataType, Injector, NgModuleMetadataType, PipeMetadataType, Type} from '@angular/core';
+import {Compiler, CompilerOptions, Component, Directive, Injector, NgModuleMetadataType, PipeMetadataType, Type} from '@angular/core';
 
 import {unimplemented} from './facade/errors';
 import {MetadataOverride} from './metadata_override';
@@ -22,12 +22,10 @@ export class TestingCompiler extends Compiler {
   overrideModule(module: Type<any>, overrides: MetadataOverride<NgModuleMetadataType>): void {
     throw unimplemented();
   }
-  overrideDirective(directive: Type<any>, overrides: MetadataOverride<DirectiveMetadataType>):
-      void {
+  overrideDirective(directive: Type<any>, overrides: MetadataOverride<Directive>): void {
     throw unimplemented();
   }
-  overrideComponent(component: Type<any>, overrides: MetadataOverride<ComponentMetadataType>):
-      void {
+  overrideComponent(component: Type<any>, overrides: MetadataOverride<Component>): void {
     throw unimplemented();
   }
   overridePipe(directive: Type<any>, overrides: MetadataOverride<PipeMetadataType>): void {

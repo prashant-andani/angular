@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {global, isFunction, stringify} from '../facade/lang';
+import {global, isFunction, isStrictStringMap, stringify} from '../facade/lang';
 import {Type} from '../type';
 
 var _nextClassId = 0;
@@ -280,6 +280,37 @@ export function makeDecorator(annotationCls: any, chainFn: (fn: Function) => voi
   DecoratorFactory.prototype = Object.create(annotationCls.prototype);
   (<any>DecoratorFactory).annotationCls = annotationCls;
   return DecoratorFactory;
+}
+
+export function makeDecorator2(props: {[key: string]: any}, parentClass?: any):
+    (...args: any[]) => (cls: any) => any {
+  const ctor = makeMetadataClass([props]);
+  const result = makeDecorator(ctor);
+  result.prototype = ctor.prototype;
+  return result;
+}
+
+function makeMetadataClass(props: ([string, any] | {[key: string]: any})[], parentClass?: any): any {
+  function ctor(...args: any[]) {
+    props.forEach((prop, i) => {
+      const argVal = args[i];
+      if (prop instanceof Array) {
+        // plain parameter
+        const val = argVal === undefined ? prop[1] : argVal;
+        this[prop[0]] = val;
+      } else {
+        // spread
+        for (let propName in prop) {
+          const val = argVal[propName] === undefined ? prop[propName] : argVal[propName];
+          this[propName] = val;
+        }
+      }
+    });
+  };
+  if (parentClass) {
+    ctor.prototype = Object.create(parentClass.prototype);
+  }
+  return ctor;
 }
 
 export function makeParamDecorator(annotationCls: any): any {

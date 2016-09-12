@@ -26,7 +26,7 @@ export * from './directive_resolver_mock';
 export * from './ng_module_resolver_mock';
 export * from './pipe_resolver_mock';
 
-import {createPlatformFactory, ModuleWithComponentFactories, Injectable, CompilerOptions, COMPILER_OPTIONS, CompilerFactory, ComponentFactory, NgModuleFactory, Injector, NgModuleMetadata, NgModuleMetadataType, ComponentMetadata, ComponentMetadataType, DirectiveMetadata, DirectiveMetadataType, PipeMetadata, PipeMetadataType, Type, PlatformRef} from '@angular/core';
+import {createPlatformFactory, ModuleWithComponentFactories, Injectable, CompilerOptions, COMPILER_OPTIONS, CompilerFactory, ComponentFactory, NgModuleFactory, Injector, NgModuleMetadata, NgModuleMetadataType, ComponentMetadata, Component, DirectiveMetadata, Directive, PipeMetadata, PipeMetadataType, Type, PlatformRef} from '@angular/core';
 import {MetadataOverride} from '@angular/core/testing';
 import {TestingCompilerFactory, TestingCompiler} from './private_import_core';
 import {platformCoreDynamic, RuntimeCompiler, DirectiveResolver, NgModuleResolver, PipeResolver} from '@angular/compiler';
@@ -75,12 +75,12 @@ export class TestingCompilerImpl implements TestingCompiler {
     this._moduleResolver.setNgModule(
         ngModule, this._overrider.overrideMetadata(NgModuleMetadata, oldMetadata, override));
   }
-  overrideDirective(directive: Type<any>, override: MetadataOverride<DirectiveMetadataType>): void {
+  overrideDirective(directive: Type<any>, override: MetadataOverride<Directive>): void {
     const oldMetadata = this._directiveResolver.resolve(directive, false);
     this._directiveResolver.setDirective(
         directive, this._overrider.overrideMetadata(DirectiveMetadata, oldMetadata, override));
   }
-  overrideComponent(component: Type<any>, override: MetadataOverride<ComponentMetadataType>): void {
+  overrideComponent(component: Type<any>, override: MetadataOverride<Component>): void {
     const oldMetadata = this._directiveResolver.resolve(component, false);
     this._directiveResolver.setDirective(
         component, this._overrider.overrideMetadata(ComponentMetadata, oldMetadata, override));
