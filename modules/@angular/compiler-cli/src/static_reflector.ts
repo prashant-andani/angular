@@ -170,12 +170,12 @@ export class StaticReflector implements ReflectorReader {
 
   private registerDecoratorOrConstructor(type: StaticSymbol, ctor: any): void {
     this.conversionMap.set(
-        type, (context: StaticSymbol, args: any[]) => { return new ctor(...args); });
+        type, (context: StaticSymbol, args: any[]) => new ctor(...args));
   }
 
   private registerFunction(type: StaticSymbol, fn: any): void {
     this.conversionMap.set(
-        type, (context: StaticSymbol, args: any[]) => { return fn.apply(undefined, args); });
+        type, (context: StaticSymbol, args: any[]) => fn.apply(undefined, args));
   }
 
   private initializeConversionMap(): void {
