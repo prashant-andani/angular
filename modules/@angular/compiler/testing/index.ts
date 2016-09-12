@@ -26,7 +26,7 @@ export * from './directive_resolver_mock';
 export * from './ng_module_resolver_mock';
 export * from './pipe_resolver_mock';
 
-import {createPlatformFactory, ModuleWithComponentFactories, Injectable, CompilerOptions, COMPILER_OPTIONS, CompilerFactory, NgModuleFactory, Injector, NgModuleMetadata, NgModule, ComponentMetadata, Component, DirectiveMetadata, Directive, PipeMetadata, PipeMetadataType, Type, PlatformRef} from '@angular/core';
+import {createPlatformFactory, ModuleWithComponentFactories, Injectable, CompilerOptions, COMPILER_OPTIONS, CompilerFactory, NgModuleFactory, Injector, NgModuleMetadata, NgModule, ComponentMetadata, Component, DirectiveMetadata, Directive, Pipe, Type, PlatformRef} from '@angular/core';
 import {MetadataOverride} from '@angular/core/testing';
 import {TestingCompilerFactory, TestingCompiler} from './private_import_core';
 import {platformCoreDynamic, RuntimeCompiler, DirectiveResolver, NgModuleResolver, PipeResolver} from '@angular/compiler';
@@ -85,10 +85,9 @@ export class TestingCompilerImpl implements TestingCompiler {
     this._directiveResolver.setDirective(
         component, this._overrider.overrideMetadata(ComponentMetadata, oldMetadata, override));
   }
-  overridePipe(pipe: Type<any>, override: MetadataOverride<PipeMetadataType>): void {
+  overridePipe(pipe: Type<any>, override: MetadataOverride<Pipe>): void {
     const oldMetadata = this._pipeResolver.resolve(pipe, false);
-    this._pipeResolver.setPipe(
-        pipe, this._overrider.overrideMetadata(PipeMetadata, oldMetadata, override));
+    this._pipeResolver.setPipe(pipe, this._overrider.overrideMetadata(Pipe, oldMetadata, override));
   }
   clearCache(): void { this._compiler.clearCache(); }
   clearCacheFor(type: Type<any>) { this._compiler.clearCacheFor(type); }

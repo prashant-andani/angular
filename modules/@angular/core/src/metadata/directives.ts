@@ -1069,41 +1069,50 @@ export const Component: ComponentMetadataFactory = <ComponentMetadataFactory>mak
     },
     Directive);
 
-
 /**
- * Interface for creating {@link PipeMetadata}
- * @stable
- */
-export interface PipeMetadataType {
-  name: string;
-  pure?: boolean;
-}
-
-/**
- * Declare reusable pipe function.
- *
- * A "pure" pipe is only re-evaluated when either the input or any of the arguments change.
- *
- * When not specified, pipes default to being pure.
+ * {@link PipeMetadata} factory for creating decorators.
  *
  * ### Example
  *
  * {@example core/ts/metadata/metadata.ts region='pipe'}
  * @stable
  */
-export class PipeMetadata extends InjectableMetadata implements PipeMetadataType {
-  name: string;
-  /** @internal */
-  _pure: boolean;
+export interface PipeMetadataFactory {
+  /**
+   * Declare reusable pipe function.
+   *
+   * A "pure" pipe is only re-evaluated when either the input or any of the arguments change.
+   *
+   * When not specified, pipes default to being pure.
+   */
+  (obj: Pipe): TypeDecorator;
 
-  constructor({name, pure}: PipeMetadataType) {
-    super();
-    this.name = name;
-    this._pure = pure;
-  }
-
-  get pure(): boolean { return isPresent(this._pure) ? this._pure : true; }
+  /**
+   * See the {@link Pipe} decorator.
+   */
+  new (obj: Pipe): Pipe;
 }
+
+/**
+ * Interface for creating {@link PipeMetadata}
+ *
+ * @stable
+ */
+export interface Pipe {
+  name?: string;
+  pure?: boolean;
+}
+
+/**
+ * Pipe decorator and metadata.
+ *
+ * @stable
+ * @Annotation
+ */
+export const Pipe: PipeMetadataFactory = <PipeMetadataFactory>makeDecorator2({
+  name: undefined,
+  pure: true,
+});
 
 /**
  * Declares a data-bound input property.

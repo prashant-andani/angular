@@ -12,14 +12,14 @@
  */
 
 import {AttributeMetadata, ContentChildMetadata, ContentChildrenMetadata, QueryMetadata, ViewChildMetadata, ViewChildrenMetadata, ViewQueryMetadata} from './metadata/di';
-import {Component, Directive, HostBindingMetadata, HostListenerMetadata, InputMetadata, OutputMetadata, PipeMetadata, PipeMetadataType} from './metadata/directives';
+import {Component, Directive, HostBindingMetadata, HostListenerMetadata, InputMetadata, OutputMetadata, Pipe} from './metadata/directives';
 import {ModuleWithProviders, NgModule, SchemaMetadata} from './metadata/ng_module';
 import {ViewEncapsulation} from './metadata/view';
 import {Type} from './type';
-import {TypeDecorator, makeDecorator, makeParamDecorator, makePropDecorator} from './util/decorators';
+import {TypeDecorator, makeParamDecorator, makePropDecorator} from './util/decorators';
 
 export {ANALYZE_FOR_ENTRY_COMPONENTS, AttributeMetadata, ContentChildMetadata, ContentChildrenMetadata, QueryMetadata, ViewChildMetadata, ViewChildrenMetadata, ViewQueryMetadata} from './metadata/di';
-export {Component, Directive, HostBindingMetadata, HostListenerMetadata, InputMetadata, OutputMetadata, PipeMetadata, PipeMetadataType} from './metadata/directives';
+export {Component, Directive, HostBindingMetadata, HostListenerMetadata, InputMetadata, OutputMetadata, Pipe} from './metadata/directives';
 export {AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, DoCheck, OnChanges, OnDestroy, OnInit} from './metadata/lifecycle_hooks';
 export {CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NO_ERRORS_SCHEMA, NgModule, SchemaMetadata} from './metadata/ng_module';
 export {ViewEncapsulation} from './metadata/view';
@@ -105,18 +105,6 @@ export interface ViewChildMetadataFactory {
 }
 
 
-/**
- * {@link PipeMetadata} factory for creating decorators.
- *
- * ### Example
- *
- * {@example core/ts/metadata/metadata.ts region='pipe'}
- * @stable
- */
-export interface PipeMetadataFactory {
-  (obj: PipeMetadataType): any;
-  new (obj: PipeMetadataType): any;
-}
 
 /**
  * {@link InputMetadata} factory for creating decorators.
@@ -162,6 +150,7 @@ export interface HostListenerMetadataFactory {
 export {Directive as DirectiveMetadata};
 export {Component as ComponentMetadata};
 export {NgModule as NgModuleMetadata};
+export {Pipe as PipeMetadata};
 
 /**
  * Specifies that a constant attribute value should be injected.
@@ -399,18 +388,6 @@ export var ViewChildren: ViewChildrenMetadataFactory = makePropDecorator(ViewChi
  * @Annotation
  */
 export var ViewChild: ViewChildMetadataFactory = makePropDecorator(ViewChildMetadata);
-
-// TODO(alexeagle): remove the duplication of this doc. It is copied from PipeMetadata.
-/**
- * Declare reusable pipe function.
- *
- * ### Example
- *
- * {@example core/ts/metadata/metadata.ts region='pipe'}
- * @stable
- * @Annotation
- */
-export var Pipe: PipeMetadataFactory = <PipeMetadataFactory>makeDecorator(PipeMetadata);
 
 // TODO(alexeagle): remove the duplication of this doc. It is copied from InputMetadata.
 /**

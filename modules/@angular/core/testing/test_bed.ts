@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {CompilerOptions, Component, Directive, Injector, ModuleWithComponentFactories, NgModule, NgModuleFactory, NgModuleRef, NgZone, OpaqueToken, PipeMetadataType, PlatformRef, Provider, SchemaMetadata, Type} from '@angular/core';
+import {CompilerOptions, Component, Directive, Injector, ModuleWithComponentFactories, NgModule, NgModuleFactory, NgModuleRef, NgZone, OpaqueToken, Pipe, PlatformRef, Provider, SchemaMetadata, Type} from '@angular/core';
 import {AsyncTestCompleter} from './async_test_completer';
 import {ComponentFixture} from './component_fixture';
 import {ListWrapper} from './facade/collection';
@@ -121,8 +121,7 @@ export class TestBed implements Injector {
     return TestBed;
   }
 
-  static overridePipe(pipe: Type<any>, override: MetadataOverride<PipeMetadataType>):
-      typeof TestBed {
+  static overridePipe(pipe: Type<any>, override: MetadataOverride<Pipe>): typeof TestBed {
     getTestBed().overridePipe(pipe, override);
     return TestBed;
   }
@@ -146,7 +145,7 @@ export class TestBed implements Injector {
   private _moduleOverrides: [Type<any>, MetadataOverride<NgModule>][] = [];
   private _componentOverrides: [Type<any>, MetadataOverride<Component>][] = [];
   private _directiveOverrides: [Type<any>, MetadataOverride<Directive>][] = [];
-  private _pipeOverrides: [Type<any>, MetadataOverride<PipeMetadataType>][] = [];
+  private _pipeOverrides: [Type<any>, MetadataOverride<Pipe>][] = [];
 
   private _providers: Provider[] = [];
   private _declarations: Array<Type<any>|any[]|any> = [];
@@ -330,7 +329,7 @@ export class TestBed implements Injector {
     this._directiveOverrides.push([directive, override]);
   }
 
-  overridePipe(pipe: Type<any>, override: MetadataOverride<PipeMetadataType>): void {
+  overridePipe(pipe: Type<any>, override: MetadataOverride<Pipe>): void {
     this._assertNotInstantiated('overridePipe', 'override pipe metadata');
     this._pipeOverrides.push([pipe, override]);
   }
